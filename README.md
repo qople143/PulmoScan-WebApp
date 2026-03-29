@@ -1,4 +1,4 @@
-# PulmoScan — AI Pulmonary Disease Detection
+# Framework for Chest X-Ray Analysis for Pulmonic Ailments
 
 > A full-stack web application for chest X-ray classification using a convolutional neural network trained on clinical images from the MIMIC-CXR dataset.
 
