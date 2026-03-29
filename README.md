@@ -86,13 +86,6 @@ PulmoScan-WebApp/
 │       │   └── About.jsx        # Model info + research stats
 │       └── components/
 │           └── Nav.jsx
-│
-├── phase1_data_acquisition.py   # PhysioNet/MIMIC-CXR downloader
-├── phase2_preprocessing.py      # Cleaning, normalisation, splitting
-├── phase3_model.py              # CNN architecture definitions
-├── phase4_training.py           # Training with GPU support
-├── phase5_evaluation.py         # Evaluation + inference
-└── requirements.txt
 ```
 
 ---
@@ -100,7 +93,7 @@ PulmoScan-WebApp/
 ## ML Pipeline
 
 ### Phase 1 — Data Acquisition
-Downloads chest X-ray datasets from Kaggle:
+Downloads chest X-ray datasets:
 - `jtiptj/chest-xray-pneumoniacovid19tuberculosis`
 - `paultimothymooney/chest-xray-pneumonia`
 
