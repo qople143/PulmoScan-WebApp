@@ -1,50 +1,62 @@
 # PulmoScan — AI Pulmonary Disease Detection
 
-> A full-stack web application for chest X-ray classification using a convolutional neural network trained on 6,300+ clinical images.
+> A full-stack web application for chest X-ray classification using a convolutional neural network trained on clinical images from the MIMIC-CXR dataset.
 
 **Live Demo:** [pulmoscanwebapp.vercel.app](https://pulmoscanwebapp.vercel.app)
 
 ---
 
+## Research Origins
+
+This project is built upon the foundational research presented in the paper "Framework for Chest X-Ray Analysis for Pulmonic Ailments". 
+* **Authors:** Sadiya Fathima N, Sinchana L, and Mohammed Siddiq Romazan.
+* **Institution:** Atria Institute of Technology, Bengaluru, Karnataka, India.
+* **Core Study:** The original research developed an automated diagnosis system for pulmonary diseases based on machine learning, utilizing the MIMIC-CXR and NIH datasets.
+
+---
+
 ## Overview
 
-PulmoScan classifies chest X-ray images into four pulmonary conditions:
+PulmoScan focuses on the detection of five key pulmonary diseases:
 
 | Condition | Description |
 |---|---|
-| **COVID-19** | Viral pneumonia showing bilateral ground-glass opacities |
-| **Pneumonia** | Bacterial/viral infection causing consolidation |
-| **Tuberculosis** | Mycobacterial infection with upper-lobe infiltrates |
-| **Normal** | Healthy lung fields with no visible pathology |
+| **COVID-19** | Manifests as bilateral ground-glass opacities, peripheral distribution, and patchy consolidations. |
+| **Pneumonia** | Characterized by localized or diffuse opacities indicating lung infection. |
+| **Tuberculosis** | Typically presents as cavitary lesions, consolidations, or nodular opacities, predominantly in the upper lung zones. |
+| **Pneumothorax** | Identified by the presence of air in the pleural space, leading to lung collapse. |
+| **Pulmonary Edema** | Exhibits diffuse haziness and increased vascular markings due to fluid buildup. |
 
 ---
 
 ## Results
 
+The underlying diagnostic framework demonstrated outstanding performance in the detection of pulmonary diseases:
+
 | Metric | Value |
 |---|---|
-| Test Accuracy | **96.5%** |
-| Test Loss | 0.1293 |
-| Training Images | 6,324 |
-| Training Epochs | 20 |
+| Accuracy | **92%** |
+| Sensitivity | **94%** |
+| Specificity | **91%** |
+| Dataset Size | 12,396 chest X-rays |
 
 ---
 
 ## Architecture
 
 ### Model (CNN)
-```
+```text
 Input (256×256×3)
   → Conv2D 16 filters, 3×3, ReLU → MaxPooling
   → Conv2D 32 filters, 3×3, ReLU → MaxPooling
   → Conv2D 64 filters, 3×3, ReLU → MaxPooling
-  → Flatten → Dense 256, ReLU → Dropout 0.3
-  → Output: 4 units, Softmax
+  → Flatten → Dense 128, ReLU 
+  → Output: 5 units, Softmax 
 ```
 
 ### Stack
 - **ML:** TensorFlow 2.16 · Keras · NumPy
-- **Backend:** FastAPI · Uvicorn · Pillow
+- **Backend:** FastAPI · Uvicorn · Python
 - **Frontend:** React 18 · Vite · Framer Motion
 - **Deployment:** Render (backend) · Vercel (frontend)
 - **Model Storage:** Git LFS
@@ -53,14 +65,14 @@ Input (256×256×3)
 
 ## Project Structure
 
-```
+```text
 PulmoScan-WebApp/
 ├── backend/
 │   ├── main.py                  # FastAPI app — /predict endpoint
 │   ├── requirements.txt
 │   ├── render.yaml              # Render deployment config
 │   └── models/
-│       └── image_classifier_multiclass.h5   # Trained model (Git LFS)
+│       └── image_classifier.h5  # Trained model (Git LFS)
 │
 ├── frontend/
 │   ├── index.html
@@ -69,21 +81,17 @@ PulmoScan-WebApp/
 │   ├── package.json
 │   └── src/
 │       ├── App.jsx
-│       ├── main.jsx
-│       ├── index.css
 │       ├── pages/
 │       │   ├── Home.jsx         # Upload + prediction UI
-│       │   └── About.jsx        # Model info + stats
+│       │   └── About.jsx        # Model info + research stats
 │       └── components/
 │           └── Nav.jsx
 │
-├── phase1_data_acquisition.py   # Kaggle dataset downloader
+├── phase1_data_acquisition.py   # PhysioNet/MIMIC-CXR downloader
 ├── phase2_preprocessing.py      # Cleaning, normalisation, splitting
 ├── phase3_model.py              # CNN architecture definitions
 ├── phase4_training.py           # Training with GPU support
 ├── phase5_evaluation.py         # Evaluation + inference
-├── evaluate.py                  # Standalone evaluation script
-├── main.py                      # Pipeline entry point
 └── requirements.txt
 ```
 
@@ -161,19 +169,6 @@ python main.py --infer path/to/xray.jpg
 | Frontend | Vercel | `frontend/vercel.json` |
 | Model weights | Git LFS | `.gitattributes` |
 
-### Environment Variables
-
-**Render (backend):**
-```
-MODEL_PATH=models/image_classifier_multiclass.h5
-FRONTEND_URL=https://pulmoscanwebapp.vercel.app
-```
-
-**Vercel (frontend):**
-```
-VITE_API_URL=https://your-api-name.onrender.com
-```
-
 ---
 
 ## API Reference
@@ -202,14 +197,4 @@ Upload a chest X-ray image and receive a diagnosis.
 { "status": "ok", "model_loaded": true }
 ```
 
----
-
-## Dataset
-
-Images sourced from two public Kaggle datasets under their respective licenses. Data was cleaned, normalised, and split before training. The MIMIC-CXR dataset (PhysioNet) was considered but not included due to access constraints.
-
----
-
-## Disclaimer
-
-PulmoScan is intended for **research and educational purposes only**. It is not a substitute for professional medical diagnosis. Always consult a qualified radiologist or physician for clinical decisions.
+***
