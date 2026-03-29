@@ -18,12 +18,8 @@ app = FastAPI(title="Pulmonary Disease Diagnosis API", version="1.0.0")
 # ── CORS — allow Vercel frontend ──────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",         # local Vite dev
-        "https://*.vercel.app",          # Vercel preview
-        os.getenv("FRONTEND_URL", "*"),  # set in Render env vars
-    ],
-    allow_credentials=True,
+    allow_origins=["*"],  # tighten this after confirming it works
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
