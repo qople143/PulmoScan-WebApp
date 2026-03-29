@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: pulmonary-diagnosis-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MODEL_PATH
+        value: models/image_classifier_multiclass.h5
+      - key: FRONTEND_URL
+        value: https://your-app.vercel.app   # update after Vercel deploy
